@@ -7,7 +7,7 @@ export const getAllMaintenance = async (
     next: NextFunction,
 ) => {
     try {
-        const maintenance = await MaintenanceService.getvlan(MaintenanceId);
+        const maintenance = await maintenanceService.getvlan(maintenanceId);
         res.status(200).json(maintenance)
     }
 }

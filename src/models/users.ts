@@ -7,4 +7,4 @@ export interface Users {
     salt: string
 }
 
-export type CreateUserInput = Omit<Location, "id">;
+export type CreateUserInput = Omit<Users, "id">;

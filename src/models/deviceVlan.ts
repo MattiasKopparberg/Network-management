@@ -4,4 +4,4 @@ export interface DeviceVlan {
     assignment_date:Date
 }
 
-export type CreateDeviceVlanInput = Omit<Location, "id">;
+export type CreateDeviceVlanInput = Omit<DeviceVlan, "id">;

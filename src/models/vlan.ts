@@ -4,4 +4,4 @@ export interface Vlan {
     name: string
 }
 
-export type CreateVlanInput = Omit<Location, "id">;
+export type CreateVlanInput = Omit<Vlan, "id">;

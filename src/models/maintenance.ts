@@ -7,4 +7,4 @@ export interface Maintenance {
     scheduled: number
 }
 
-export type CreateMaintenanceInput = Omit<Location, "id">;
+export type CreateMaintenanceInput = Omit<Maintenance, "id">;
