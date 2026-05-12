@@ -1,7 +1,7 @@
 import * as deviceRepo from "../repositories/devicesRepository.js";
-import type { Device, CreateDeviceInput } from "../models/devices.js";
+import type { Devices, CreateDeviceInput } from "../models/devices.js";
 
-export const getDevices = async (locationId?: number): Promise<Device[]> => {
+export const getDevices = async (locationId?: number): Promise<Devices[]> => {
   if (locationId) {
     return await deviceRepo.getDevicesByLocation(locationId);
   }
@@ -17,7 +17,7 @@ export const getDeviceCount = async () => {
   return devices.length;
 };
 
-export const createDevice = async (deviceData: Device) => {
+export const createDevice = async (deviceData: Devices) => {
   return await deviceRepo.createDevice(deviceData);
 };
 

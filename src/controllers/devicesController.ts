@@ -11,7 +11,6 @@ export const getDevices = async (
       ? Number(req.query.locationId)
       : undefined;
     const devices = await deviceService.getDevices(locationId);
-    res.json(devices);
     res.status(200).json(devices);
   } catch (err) {
     next(err);
@@ -63,7 +62,7 @@ export const createDevice = async (
 
     const requiredFields = [
       "IPv4_address",
-      "IPv7_address",
+      "IPv6_address",
       "MAC_address",
       "subnet_mask",
       "OS",
@@ -71,7 +70,6 @@ export const createDevice = async (
       "installation_date",
       "manufacturer",
       "location_id",
-      "floor",
     ];
 
     for (const field of requiredFields) {
@@ -80,11 +78,7 @@ export const createDevice = async (
       }
     }
     const newDevice = await deviceService.createDevice(deviceData);
-    res
-      .status(201)
-      .json(newDevice)
-      .location(`/devices/${newDevice.id}`)
-      .json(newDevice);
+    return res.status(201).json(newDevice);
   } catch (err) {
     next(err);
   }

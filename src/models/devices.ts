@@ -1,4 +1,4 @@
-export interface Device {
+export interface Devices {
   id: number;
   IPv4_address: string;
   IPv6_address: string;
@@ -12,4 +12,4 @@ export interface Device {
   floor: number;
 }
 
-export type CreateDeviceInput = Omit<Device, "id">;
+export type CreateDeviceInput = Omit<Devices, "id">;

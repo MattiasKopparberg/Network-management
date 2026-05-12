@@ -1,25 +1,25 @@
 import { db } from "../config/db.js";
-import { Device, CreateDeviceInput } from "../models/devices.js";
+import { Devices, CreateDeviceInput } from "../models/devices.js";
 import { ResultSetHeader } from "mysql2";
 
-export const getAllDevices = async (): Promise<Device[]> => {
+export const getAllDevices = async (): Promise<Devices[]> => {
   const [rows] = await db.query("SELECT * FROM devices");
-  return rows as Device[];
+  return rows as Devices[];
 };
 
-export const getDeviceById = async (id: number): Promise<Device | null> => {
-  const [rows] = await db.query("SELECT * FROM devices WHERE id = ?", [id]);
+export const getDeviceById = async (id: number): Promise<Devices | null> => {
+  const [rows] = await db.query("SELECT * FROM devices WHERE device_id = ?", [id]);
 
-  return (rows as Device[])[0] || null;
+  return (rows as Devices[])[0] || null;
 };
 
 export const createDevice = async (
   device: CreateDeviceInput,
-): Promise<Device> => {
+): Promise<Devices> => {
   const [result] = await db.query<ResultSetHeader>(
     `INSERT INTO devices 
-    (IPv4_address, IPv6_address, MAC_address, subnet_mask, OS, OS_version, installation_date, manufacturer, location_id, floor)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    (IPv4_address, IPv6_address, MAC_address, subnet_mask, OS, OS_version, installation_date, manufacturer, location_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       device.IPv4_address,
       device.IPv6_address,
@@ -30,7 +30,6 @@ export const createDevice = async (
       device.installation_date,
       device.manufacturer,
       device.location_id,
-      device.floor,
     ],
   );
 
@@ -42,12 +41,12 @@ export const createDevice = async (
 
 export const getDevicesByLocation = async (
   locationId: number,
-): Promise<Device[]> => {
+): Promise<Devices[]> => {
   const [rows] = await db.query("SELECT * FROM devices WHERE location_id = ?", [
     locationId,
   ]);
 
-  return rows as Device[];
+  return rows as Devices[];
 };
 
 export const getDeviceLocation = async (id: number) => {
@@ -64,7 +63,7 @@ export const getDeviceLocation = async (id: number) => {
 export const updateDevice = async (
   id: number,
   updates: Partial<CreateDeviceInput>,
-): Promise<Device | null> => {
+): Promise<Devices | null> => {
   const fields = Object.keys(updates);
 
   if (fields.length === 0) {
@@ -75,7 +74,7 @@ export const updateDevice = async (
 
   const setClause = fields.map((field) => `${field} = ?`).join(", ");
 
-  await db.query(`UPDATE devices SET ${setClause} WHERE id = ?`, [
+  await db.query(`UPDATE devices SET ${setClause} WHERE device_id = ?`, [
     ...values,
     id,
   ]);
@@ -85,7 +84,7 @@ export const updateDevice = async (
 
 export const deleteDevice = async (id: number): Promise<boolean> => {
   const [result] = await db.query<ResultSetHeader>(
-    "DELETE FROM devices WHERE id = ?",
+    "DELETE FROM devices WHERE device_id = ?",
     [id],
   );
 
