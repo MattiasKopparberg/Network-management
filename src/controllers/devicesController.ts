@@ -1,157 +1,92 @@
 import * as deviceService from "../services/devicesService.js";
 import { Request, Response, NextFunction } from "express";
+import { AppError } from "../utils/AppError.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
+import { parseId } from "../utils/parseId.js";
+import { parseOptionalPositiveNumber } from "../utils/parseOptionalPositiveNumber.js";
 
-export const getDevices = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const locationId = req.query.locationId
-      ? Number(req.query.locationId)
-      : undefined;
-    const devices = await deviceService.getDevices(locationId);
-    res.status(200).json(devices);
-  } catch (err) {
-    next(err);
+export const getDevices = asyncHandler(async (req: Request, res: Response) => {
+  const locationId = parseOptionalPositiveNumber(req.query.locationId);
+
+  const devices = await deviceService.getDevices(locationId);
+
+  res.status(200).json(devices);
+});
+
+export const getDeviceById = asyncHandler(async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
+
+  const device = await deviceService.getDeviceById(id);
+
+  if (!device) {
+    throw new AppError("Device not found", 404);
   }
-};
 
-export const getDeviceById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const id = Number(req.params.id);
-    if (isNaN(id) || id <= 0) {
-      return res.status(400).json({ error: "Invalid device ID" });
-    }
-    const device = await deviceService.getDeviceById(id);
-    if (!device) {
-      return res.status(404).json({ error: "Device not found" });
-    }
+  res.json(device);
+});
 
-    res.json(device);
-  } catch (err) {
-    next(err);
+export const getDeviceCount = asyncHandler(async (req: Request, res: Response) => {
+  const count = await deviceService.getDeviceCount();
+
+  res.status(200).json({ count });
+});
+
+export const createDevice = asyncHandler(async (req: Request, res: Response) => {
+  const requiredFields = [
+    "IPv4_address",
+    "IPv6_address",
+    "MAC_address",
+    "subnet_mask",
+    "OS",
+    "OS_version",
+    "installation_date",
+    "manufacturer",
+    "location_id",
+  ];
+
+  for (const field of requiredFields) {
+    if (!req.body[field]) {
+      throw new AppError(`${field} is required`, 400);
+    }
   }
-};
 
-export const getDeviceCount = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const count: number = await deviceService.getDeviceCount();
+  const newDevice = await deviceService.createDevice(req.body);
 
-    res.status(200).json({ count });
-  } catch (err) {
-    next(err);
+  res.status(201).json(newDevice);
+});
+
+export const getDeviceLocation = asyncHandler(async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
+
+  const location = await deviceService.getDeviceLocation(id);
+
+  if (!location) {
+    throw new AppError("Device or location not found", 404);
   }
-};
 
-export const createDevice = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const deviceData = req.body;
+  res.status(200).json(location);
+});
 
-    const requiredFields = [
-      "IPv4_address",
-      "IPv6_address",
-      "MAC_address",
-      "subnet_mask",
-      "OS",
-      "OS_version",
-      "installation_date",
-      "manufacturer",
-      "location_id",
-    ];
+export const updateDevice = asyncHandler(async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
 
-    for (const field of requiredFields) {
-      if (!deviceData[field]) {
-        return res.status(400).json({ error: `${field} is required` });
-      }
-    }
-    const newDevice = await deviceService.createDevice(deviceData);
-    return res.status(201).json(newDevice);
-  } catch (err) {
-    next(err);
+  const updatedDevice = await deviceService.updateDevice(id, req.body);
+
+  if (!updatedDevice) {
+    throw new AppError("Device not found", 404);
   }
-};
 
-export const getDeviceLocation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const id = Number(req.params.id);
+  res.status(200).json(updatedDevice);
+});
 
-    if (isNaN(id) || id <= 0) {
-      return res.status(400).json({ error: "Invalid device ID" });
-    }
+export const deleteDevice = asyncHandler(async (req: Request, res: Response) => {
+  const id = parseId(req.params.id);
 
-    const location = await deviceService.getDeviceLocation(id);
+  const deleted = await deviceService.deleteDevice(id);
 
-    if (!location) {
-      return res.status(404).json({ error: "Device or location not found" });
-    }
-    res.json(location);
-    res.status(200).json(location);
-  } catch (err) {
-    next(err);
+  if (!deleted) {
+    throw new AppError("Device not found", 404);
   }
-};
 
-export const updateDevice = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const id = Number(req.params.id);
-
-    if (isNaN(id) || id <= 0) {
-      return res.status(400).json({ error: "invalid device ID" });
-    }
-
-    const updatedDevice = await deviceService.updateDevice(id, req.body);
-
-    if (!updatedDevice) {
-      return res.status(404).json({ error: "Device not found" });
-    }
-
-    res.status(200).json(id);
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const deleteDevice = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const id = Number(req.params.id);
-
-    if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid device id" });
-    }
-
-    const deleted = await deviceService.deleteDevice(id);
-
-    if (!deleted) {
-      return res.status(404).json({ error: "Device not found" });
-    }
-
-    res.status(204).send();
-  } catch (err) {
-    next(err);
-  }
-};
+  res.status(204).send();
+});

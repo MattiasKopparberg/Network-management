@@ -3,6 +3,7 @@ import { db } from "../config/db.js";
 import {
   DeviceVlan,
   CreateDeviceVlanInput,
+  DeviceVlanDetails
 } from "../models/deviceVlan.js";
 
 import {
@@ -80,4 +81,27 @@ export const deleteDeviceVlan = async (
   );
 
   return result.affectedRows > 0;
+};
+
+export const getDeviceVlanDetails = async (): Promise<DeviceVlanDetails[]> => {
+  const [rows] = await db.query<RowDataPacket[]>(
+    `
+    SELECT
+      d.id AS device_id,
+      d.hostname,
+      d.ip_address,
+
+      v.id AS vlan_id,
+      v.vlan_name,
+      v.vlan_number,
+
+      dv.assignment_date
+
+    FROM devicevlan dv
+    JOIN devices d ON dv.device_id = d.id
+    JOIN vlan v ON dv.vlan_id = v.id
+    `
+  );
+
+  return rows as DeviceVlanDetails[];
 };

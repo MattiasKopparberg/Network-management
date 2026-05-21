@@ -60,3 +60,16 @@ export const deleteDeviceVlan = async (
     next(err);
   }
 };
+
+export const getDeviceVlanDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await deviceVlanService.getDeviceVlanDetails();
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+};

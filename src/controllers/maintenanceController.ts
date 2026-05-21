@@ -1,5 +1,5 @@
-import * as maintenance from "../services/maintenanceService.js"
-import { request, response, NextFunction } from "express"
+import * as maintenanceService from "../services/maintenanceService.js"
+import { Request, Response, NextFunction } from "express"
 
 export const getAllMaintenance = async (
     req: Request,
@@ -7,7 +7,9 @@ export const getAllMaintenance = async (
     next: NextFunction,
 ) => {
     try {
-        const maintenance = await maintenanceService.getvlan(maintenanceId);
+        const maintenance = await maintenanceService.getAllMaintenances();
         res.status(200).json(maintenance)
+    } catch (err){
+        next(err)
     }
 }
