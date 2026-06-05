@@ -18,10 +18,11 @@ app.use("/deviceVlan", deviceVlanRoute)
 app.use("/maintenance", maintenanceRoute)
 app.use("/users", usersRoute)
 app.use("/vlan", vlanRoute)
-app.get("/", (req, res) => {
-  res.json({ message: "API is running" });
-});
 
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(errorHandler)
 
 export default app;

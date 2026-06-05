@@ -3,6 +3,7 @@ export interface Users {
     fname: string,
     lname: string,
     user_group: string,
+    email: string
     password: string,
     salt: string
 }
