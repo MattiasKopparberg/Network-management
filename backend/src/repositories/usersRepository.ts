@@ -6,27 +6,24 @@ export const getAllUsers = async (): Promise<Users[]> => {
   const [rows] = await db.query("SELECT * FROM users");
   return rows as Users[];
 };
- 
-export const getUserByEmail = async (email: string): Promise<Users[]> => {
-  const [rows] = await db.query("SELECT * FROM users where email =?")
-  return rows as Users[];
-}
 
 export const createUser = async (
-  users: CreateUserInput
-): Promise<Users> => {
-  const [result] = await db.query<ResultSetHeader>(`
-    INSERT INTO users
-    (email, password)
-    VALUES (?, ?)`,
-  [
-    users.email,
-    users.password
-  ]
-  )
+  email: string,
+  passwordHash: string
+) => {
+  const [result]: any = await db.query(
+    `
+      INSERT INTO users
+      (email, password_hash)
+      VALUES (?, ?)
+    `,
+    [email]
+  );
 
-  return {
-    id: result.insertId,
-    ...users
-  }
+  return result.insertId;
+};
+
+export const getUserByEmail = async (email: string): Promise<Users[]> => {
+  const [rows] = await db.query("SELECT * FROM users where email = ?");
+  return rows as Users[];
 }

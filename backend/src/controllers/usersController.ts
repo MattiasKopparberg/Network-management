@@ -14,15 +14,3 @@ export const getAllUsers = async (
     }
 }
 
-export const getUserByEmail = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-) => {
-    try {
-        const user = await usersService.getUserByEmail(email)
-        res.status(200).json(email)
-    } catch(err) {
-        next(err)
-    }
-}

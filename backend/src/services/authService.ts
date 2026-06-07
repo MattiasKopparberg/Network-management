@@ -1,7 +1,8 @@
-import * as authRepo from "../repositories/authRepository"
-import bycrypt from "bycrypt"
-import jwt from "jsonwebtoken"
+import * as authRepository from "../repositories/authRepository.js"
 import * as userRepository from "../repositories/usersRepository.js"
+import type { Users } from "../models/users.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 import { AppError } from "../utils/AppError.js"
 
 export const registerUser = async (
@@ -9,13 +10,13 @@ export const registerUser = async (
     password: string
 ) => {
     const existingUser =
-    await userRepository.getUserByEmail(email)
+    await authRepository.getUserByEmail(email)
 
     if(existingUser) {
         throw new AppError("User already exists", 400)
     }
 
-    const hashedPassword = await bycrypt.hash(
+    const hashedPassword = await bcrypt.hash(
         password,
         10
     );
@@ -33,13 +34,13 @@ export const loginUser = async (
     password: string
 ) => {
     const user =
-    await userRepository.getUserByEmail(email);
+    await authRepository.getUserByEmail(email);
 
     if (!user) {
         throw new AppError("Could not find user", 404)
     }
 
-    const valid = await bycrypt.compare(
+    const valid = await bcrypt.compare(
         password,
         user.password_hash
     );

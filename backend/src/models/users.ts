@@ -4,7 +4,7 @@ export interface Users {
     lname: string,
     user_group: string,
     email: string
-    password: string,
+    passwordHash: string,
     salt: string
 }
 
