@@ -19,10 +19,6 @@ app.use("/maintenance", maintenanceRoute)
 app.use("/users", usersRoute)
 app.use("/vlan", vlanRoute)
 
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-}));
 app.use(errorHandler)
 
 export default app;
