@@ -6,10 +6,10 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    const response = await fetch("http://YOUR_SERVER_IP:3000/login", {
+    const response = await fetch(`${SERVER_IP}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
