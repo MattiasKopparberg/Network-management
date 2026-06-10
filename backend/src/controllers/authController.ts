@@ -1,7 +1,6 @@
 import * as authService from "../services/authService.js"
-import * as usersService from "../services/usersService.js"
 import { Request, Response, NextFunction } from "express";
-import { asyncHandler } from "../middleware/asyncHandler.js";§  
+import { asyncHandler } from "../middleware/asyncHandler.js";
 import { AppError } from "../utils/AppError.js";
 
 export const loginUser = asyncHandler(
@@ -45,22 +44,3 @@ export const registerUser = asyncHandler(
     res.status(201).json(user);
   }
 );
-
-export const getUserByEmail = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-
-    const { email } = req.params;
-
-    const user =
-      await usersService.getUserByEmail(email);
-
-    res.status(200).json(user);
-
-  } catch(err) {
-    next(err);
-  }
-}

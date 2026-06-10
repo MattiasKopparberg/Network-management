@@ -5,6 +5,7 @@ import deviceVlanRoute from "./routes/devicevlan.js"
 import maintenanceRoute from "./routes/maintenance.js"
 import usersRoute from "./routes/users.js"
 import vlanRoute from "./routes/vlan.js"
+import authRoute from "./routes/auth.js"
 
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -18,6 +19,12 @@ app.use("/deviceVlan", deviceVlanRoute)
 app.use("/maintenance", maintenanceRoute)
 app.use("/users", usersRoute)
 app.use("/vlan", vlanRoute)
+app.use("/auth", authRoute)
+
+
+app.get("/", (req, res) => {
+  res.json({ message: "API is running" });
+});
 
 app.use(errorHandler)
 

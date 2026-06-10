@@ -1,6 +1,5 @@
 import * as authRepository from "../repositories/authRepository.js"
 import * as userRepository from "../repositories/usersRepository.js"
-import type { Users } from "../models/users.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { AppError } from "../utils/AppError.js"
