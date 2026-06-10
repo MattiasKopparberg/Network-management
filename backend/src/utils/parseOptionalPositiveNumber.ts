@@ -1,7 +1,12 @@
+import { ParsedQs } from "qs";
 import { AppError } from "./AppError.js";
 
 export const parseOptionalPositiveNumber = (
-  value: string | string[] | ParsedQs | ParsedQs[] | undefined,
+  value:
+    | string
+    | ParsedQs
+    | (string | ParsedQs)[]
+    | undefined,
 ): number | undefined => {
   if (!value) return undefined;
 
@@ -13,7 +18,7 @@ export const parseOptionalPositiveNumber = (
 
   const num = Number(v);
 
-  if (isNaN(num) || num <= 0) {
+  if (Number.isNaN(num) || num <= 0) {
     throw new AppError("Invalid number parameter", 400);
   }
 
