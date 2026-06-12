@@ -13,3 +13,22 @@ export const getAllUsers = async (
         next(err);
     }
 }
+
+export const getUserByEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+
+    const { email } = req.params;
+
+    const user =
+      await usersService.getUserByEmail(email);
+
+    res.status(200).json(user);
+
+  } catch(err) {
+    next(err);
+  }
+}
