@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: React.SubmitEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch(`${SERVER_IP}`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,10 +23,8 @@ export default function LoginPage() {
       credentials: "include",
     });
 
-    const data = await response.json();
-
-    console.log(data);
-  };
+   return response.json();
+};
 
   return (
     <main>

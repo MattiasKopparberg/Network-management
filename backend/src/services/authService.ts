@@ -1,4 +1,3 @@
-import * as authRepository from "../repositories/authRepository.js"
 import * as userRepository from "../repositories/usersRepository.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -9,7 +8,7 @@ export const registerUser = async (
     password: string
 ) => {
     const existingUser =
-    await authRepository.getUserByEmail(email)
+    await userRepository.getUserByEmail(email)
 
     if(existingUser) {
         throw new AppError("User already exists", 400)
@@ -33,10 +32,10 @@ export const loginUser = async (
     password: string
 ) => {
     const user =
-    await authRepository.getUserByEmail(email);
+    await userRepository.getUserByEmail(email);
 
     if (!user) {
-        throw new AppError("Could not find user", 404)
+        throw new AppError("Invalid credentials", 404)
     }
 
     const valid = await bcrypt.compare(
@@ -48,15 +47,17 @@ export const loginUser = async (
         throw new AppError("Invalid credentials", 400)
     }
 
+    const secret = process.env.JWT_SECRET;
+
+if (!secret) {
+    throw new Error("JWT_SECRET is not configured");
+}
+
     const token = jwt.sign(
-        {
-            userId: user.id,
-        },
-        process.env.JWT_SECRET!,
-        {
-            expiresIn:"1h",
-        }
-    );
+    { userId: user.id },
+    secret,
+    { expiresIn: "1h" }
+);
     return {
         token,
         user: {

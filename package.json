@@ -1,0 +1,22 @@
+{
+  "name": "Network-management",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+
+    "build": "npm run build --prefix backend",
+
+    "seed": "npm run build --prefix backend && npm run seed --prefix backend",
+
+    "backend": "npm run dev --prefix backend",
+
+    "frontend": "npm run dev --prefix frontend",
+
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+
+    "setup": "npm run install:all && npm run build && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
