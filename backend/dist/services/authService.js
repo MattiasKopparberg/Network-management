@@ -14,17 +14,17 @@ export const registerUser = async (email, password) => {
 export const loginUser = async (email, password) => {
     const user = await userRepository.getUserByEmail(email);
     if (!user) {
-        throw new AppError("Could not find user", 404);
+        throw new AppError("Invalid credentials", 404);
     }
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
         throw new AppError("Invalid credentials", 400);
     }
-    const token = jwt.sign({
-        userId: user.id,
-    }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-    });
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error("JWT_SECRET is not configured");
+    }
+    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
     return {
         token,
         user: {

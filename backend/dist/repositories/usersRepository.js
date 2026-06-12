@@ -12,6 +12,7 @@ export const createUser = async (email, passwordHash) => {
     return result.insertId;
 };
 export const getUserByEmail = async (email) => {
-    const [rows] = await db.query("SELECT * FROM users where email = ?");
-    return rows;
+    const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
+    const users = rows;
+    return users[0] ?? null;
 };

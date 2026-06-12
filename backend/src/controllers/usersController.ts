@@ -23,6 +23,10 @@ export const getUserByEmail = async (
 
     const { email } = req.params;
 
+    if (typeof email !== "string") {
+  throw new Error("Invalid email param");
+}
+
     const user =
       await usersService.getUserByEmail(email);
 

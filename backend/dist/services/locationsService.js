@@ -16,7 +16,7 @@ export const createLocation = async (location) => {
         location.floor
     ]);
     return {
-        location_id: result.insertId,
+        id: result.insertId,
         ...location,
     };
 };

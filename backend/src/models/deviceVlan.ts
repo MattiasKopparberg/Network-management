@@ -1,4 +1,5 @@
 export interface DeviceVlan {
+  id: number
   device_id: number;
   vlan_id: number;
   assignment_date: Date;
@@ -16,4 +17,4 @@ export interface DeviceVlanDetails {
   assignment_date: Date;
 };
 
-export type CreateDeviceVlanInput = DeviceVlan;
+export type CreateDeviceVlanInput = Omit<DeviceVlan, "id">;

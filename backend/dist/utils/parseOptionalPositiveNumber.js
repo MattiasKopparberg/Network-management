@@ -7,7 +7,7 @@ export const parseOptionalPositiveNumber = (value) => {
         throw new AppError("Invalid query parameter", 400);
     }
     const num = Number(v);
-    if (isNaN(num) || num <= 0) {
+    if (Number.isNaN(num) || num <= 0) {
         throw new AppError("Invalid number parameter", 400);
     }
     return num;

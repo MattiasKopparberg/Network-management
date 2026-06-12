@@ -1,21 +1,33 @@
-import Button from "../UI/button"
+"use client";
+
+import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="bg-gray-100 py-20">
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        <h1 className="text-5xl font-bold mb-6">
-          Welcome to Alien Planet
-        </h1>
+    <header className="w-full border-b bg-white">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        
+        <Link href="/" className="font-bold text-lg text-gray-900">
+          NetControl
+        </Link>
 
-        <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-          Explore planets, galaxies, and mysterious worlds in your
-          fullstack application.
-        </p>
+        <nav className="flex items-center gap-6 text-sm text-gray-600">
+          <Link href="/" className="hover:text-black transition">
+            Home
+          </Link>
 
-        <Button>
-          Explore Now
-        </Button>
+          <Link href="/dashboard" className="hover:text-black transition">
+            Dashboard
+          </Link>
+
+          <Link href="/devices" className="hover:text-black transition">
+            Devices
+          </Link>
+
+          <Link href="/login" className="hover:text-black transition">
+            Login
+          </Link>
+        </nav>
       </div>
     </header>
   );
