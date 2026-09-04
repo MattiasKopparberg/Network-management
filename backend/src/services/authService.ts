@@ -44,7 +44,7 @@ export const loginUser = async (
     );
 
     if(!valid) {
-        throw new AppError("Invalid credentials", 400)
+        throw new AppError("Invalid credentials", 401)
     }
 
     const secret = process.env.JWT_SECRET;

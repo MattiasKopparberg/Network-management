@@ -12,17 +12,21 @@ export default function LoginForm() {
 
   const { login, loading, error } = useLogin();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = await login(email, password);
-
-    console.log("LOGIN RESULT:", data);
+    await login(email, password);
   };
 
   return (
     <Card>
-      <h1 className="text-2xl font-semibold mb-6">Welcome back</h1>
+      <h2 className="mb-2 text-2xl font-semibold">
+        Welcome back
+      </h2>
+
+      <p className="mb-6 text-sm text-slate-500">
+        Sign in to access your dashboard.
+      </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
@@ -40,7 +44,9 @@ export default function LoginForm() {
         />
 
         {error && (
-          <p className="text-sm text-red-500">{error}</p>
+          <p className="text-sm text-red-500">
+            {error}
+          </p>
         )}
 
         <Button type="submit" loading={loading}>
