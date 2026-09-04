@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Input from "@/app/components/ui/Input";
 import Button from "@/app/components/ui/button";
-import Card from "@/app/components/ui/Card";
+import Card from "@/app/components/ui/card";
 import { useLogin } from "./useLogic";
 
 export default function LoginForm() {
