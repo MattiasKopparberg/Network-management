@@ -1,4 +1,7 @@
-export default function Card({
+
+
+
+export default function card({
   children,
 }: {
   children: React.ReactNode;

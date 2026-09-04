@@ -2,7 +2,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
 };
 
-export default function Input({ label, ...props }: Props) {
+export default function input({ label, ...props }: Props) {
   return (
     <div className="flex flex-col gap-1 w-full">
       <label className="text-sm text-gray-600">{label}</label>

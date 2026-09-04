@@ -2,7 +2,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: boolean;
 };
 
-export default function Button({
+export default function button({
   loading,
   children,
   ...props
