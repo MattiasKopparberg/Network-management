@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Input from "@/app/components/ui/Input";
+import Input from "@/app/components/ui/input";
 import Button from "@/app/components/ui/button";
 import Card from "@/app/components/ui/card";
 import { useLogin } from "./useLogic";
