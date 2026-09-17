@@ -1,4 +1,4 @@
-import { AppError } from "./AppError.js";
+import { AppError } from "./AppError";
 
 export const requireFields = (body: any, fields: string[]) => {
   for (const field of fields) {

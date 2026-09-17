@@ -1,5 +1,5 @@
-import { db } from "../config/db.js";
-import { Location, CreateLocationInput } from "../models/location.js";
+import { db } from "../config/db";
+import { Location, CreateLocationInput } from "../models/location";
 import { ResultSetHeader } from "mysql2";
 
 export const getAllLocations = async () => {
@@ -8,7 +8,7 @@ export const getAllLocations = async () => {
 }
 
 export const getLocationById = async (id: number): Promise<Location | null> => {
-  const [rows] = await db.query("SELECT * FROM locations WHERE location_id = ?", [id]);
+  const [rows] = await db.query("SELECT * FROM locations WHERE id = ?", [id]);
 
   return (rows as Location[])[0] || null;
 };
@@ -37,7 +37,7 @@ export const createLocation = async (
 export const getLocationByLocation = async (
   locationId: number,
 ): Promise<Location[]> => {
-  const [rows] = await db.query("SELECT * FROM Locations WHERE location_id = ?", [
+  const [rows] = await db.query("SELECT * FROM locations WHERE id = ?", [
     locationId,
   ]);
 
@@ -46,13 +46,13 @@ export const getLocationByLocation = async (
 
 export const getLocationDevices = async (id: number) => {
   const [rows] = await db.query(
-    `SELECT l.*, l.name as location_name
+    `SELECT d.*
     FROM devices d
-    JOIN locations l ON d.location_id = l.location_id
-    WHERE d.id = ?`,
+    JOIN locations l ON d.location_id = l.id
+    WHERE l.id = ?`,
     [id],
   );
-  return (rows as any[])[0] || null;
+  return rows as any[];
 };
 
 export const updateLocation = async (
@@ -69,7 +69,7 @@ export const updateLocation = async (
 
   const setClause = fields.map((field) => `${field} = ?`).join(", ");
 
-  await db.query(`UPDATE locations SET ${setClause} WHERE location_id = ?`, [
+  await db.query(`UPDATE locations SET ${setClause} WHERE id = ?`, [
     ...values,
     id,
   ]);
@@ -79,7 +79,7 @@ export const updateLocation = async (
 
 export const deleteLocation = async (id: number): Promise<boolean> => {
   const [result] = await db.query<ResultSetHeader>(
-    "DELETE FROM locations WHERE location_id = ?",
+    "DELETE FROM locations WHERE id = ?",
     [id],
   );
 

@@ -1,13 +1,13 @@
 import express from "express";
-import devicesRoute from "./routes/devices.js";
-import locationsRoute from "./routes/locations.js"
-import deviceVlanRoute from "./routes/devicevlan.js"
-import maintenanceRoute from "./routes/maintenance.js"
-import usersRoute from "./routes/users.js"
-import vlanRoute from "./routes/vlan.js"
-import authRoute from "./routes/auth.js"
+import devicesRoute from "./routes/devices";
+import locationsRoute from "./routes/locations";
+import deviceVlanRoute from "./routes/devicevlan";
+import maintenanceRoute from "./routes/maintenance";
+import usersRoute from "./routes/users";
+import vlanRoute from "./routes/vlan";
+import authRoute from "./routes/auth";
 
-import { errorHandler } from "./middleware/errorHandler.js";
+import { errorHandler } from "./middleware/errorHandler";
 
 
 const app = express();

@@ -1,5 +1,5 @@
-import { db } from "../config/db.js";
-import { Vlan, CreateVlanInput } from "../models/vlan.js";
+import { db } from "../config/db";
+import { Vlan, CreateVlanInput } from "../models/vlan";
 import { ResultSetHeader } from "mysql2";
 
 export const getAllVlan = async (): Promise<Vlan[]> => {

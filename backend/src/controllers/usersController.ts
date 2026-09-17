@@ -1,4 +1,4 @@
-import * as usersService from "../services/usersService.js"
+import * as usersService from "../services/usersService";
 import { Request, Response, NextFunction } from "express"
 
 export const getAllUsers = async (
@@ -22,9 +22,12 @@ export const getUserByEmail = async (
   try {
 
     const { email } = req.params;
+    
+    if (!email) {
+      return res.status(400).json({ error: "Email parameter is required" });
+    }
 
-    const user =
-      await usersService.getUserByEmail(email);
+    const user = await usersService.getUserByEmail(email);
 
     res.status(200).json(user);
 

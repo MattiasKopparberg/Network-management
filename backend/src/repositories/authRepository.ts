@@ -1,5 +1,5 @@
-import { Users, CreateUserInput } from "../models/users.js";
-import { db } from "../config/db.js";
+import { Users, CreateUserInput } from "../models/users";
+import { db } from "../config/db";
 import { ResultSetHeader } from "mysql2";
 
 export const getAllUsers = async (): Promise<Users[]> => {
@@ -17,7 +17,7 @@ export const createUser = async (
       (email, password_hash)
       VALUES (?, ?)
     `,
-    [email]
+    [email, passwordHash]
   );
 
   return result.insertId;

@@ -1,9 +1,9 @@
-import * as deviceVlanService from "../services/deviceVlanService.js";
+import * as deviceVlanService from "../services/deviceVlanService";
 import { Request, Response, NextFunction } from "express";
-import { asyncHandler } from "../middleware/asyncHandler.js";
-import { AppError } from "../utils/AppError.js";
-import { parseId } from "../utils/parseId.js";
-import { requireFields } from "../utils/requierdFields.js";
+import { asyncHandler } from "../middleware/asyncHandler";
+import { AppError } from "../utils/AppError";
+import { parseId } from "../utils/parseId";
+import { requireFields } from "../utils/requiredFields";
 
 export const createDeviceVlan = asyncHandler(async (req, res) => {
   requireFields(req.body, [

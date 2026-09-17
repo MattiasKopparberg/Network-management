@@ -1,9 +1,9 @@
-import * as deviceService from "../services/devicesService.js";
+import * as deviceService from "../services/devicesService";
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../utils/AppError.js";
-import { asyncHandler } from "../middleware/asyncHandler.js";
-import { parseId } from "../utils/parseId.js";
-import { parseOptionalPositiveNumber } from "../utils/parseOptionalPositiveNumber.js";
+import { AppError } from "../utils/AppError";
+import { asyncHandler } from "../middleware/asyncHandler";
+import { parseId } from "../utils/parseId";
+import { parseOptionalPositiveNumber } from "../utils/parseOptionalPositiveNumber";
 
 export const getDevices = asyncHandler(async (req: Request, res: Response) => {
   const locationId = parseOptionalPositiveNumber(req.query.locationId);

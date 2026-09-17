@@ -4,7 +4,7 @@ import  {
     deleteDeviceVlan,
     // updateDeviceVlan,
     getDeviceVlanDetails
-} from "../controllers/deviceVlanController.js";
+} from "../controllers/deviceVlanController";
 
 const router = express.Router();
 

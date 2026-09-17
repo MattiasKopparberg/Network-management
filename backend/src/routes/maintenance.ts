@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllMaintenance } from "../controllers/maintenanceController.js"
+import { getAllMaintenance } from "../controllers/maintenanceController";
 
 const router = express.Router();
 

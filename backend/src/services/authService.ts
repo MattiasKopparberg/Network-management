@@ -1,7 +1,7 @@
-import * as userRepository from "../repositories/usersRepository.js"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import { AppError } from "../utils/AppError.js"
+import * as userRepository from "../repositories/usersRepository";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { AppError } from "../utils/AppError";
 
 export const registerUser = async (
     email: string,

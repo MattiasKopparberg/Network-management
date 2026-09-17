@@ -1,8 +1,8 @@
-import { db } from "../config/db.js";
+import { db } from "../config/db";
 import type {
   Location,
   CreateLocationInput
-} from "../models/location.js";
+} from "../models/location";
 
 import { ResultSetHeader } from "mysql2";
 
@@ -20,7 +20,7 @@ export const getLocationById = async (
 ): Promise<Location | null> => {
 
   const [rows] = await db.query(
-    "SELECT * FROM locations WHERE location_id = ?",
+    "SELECT * FROM locations WHERE id = ?",
     [id]
   );
 
@@ -67,7 +67,7 @@ export const updateLocation = async (
   await db.query(
     `UPDATE locations
      SET ${setClause}
-     WHERE location_id = ?`,
+     WHERE id = ?`,
     [...values, id]
   );
 
@@ -79,7 +79,7 @@ export const deleteLocation = async (
 ): Promise<boolean> => {
 
   const [result] = await db.query<ResultSetHeader>(
-    "DELETE FROM locations WHERE location_id = ?",
+    "DELETE FROM locations WHERE id = ?",
     [id]
   );
 

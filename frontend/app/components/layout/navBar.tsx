@@ -4,7 +4,6 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
-  { mame: "Login", href: "/login"}
 ];
 
 export default function Navbar() {
