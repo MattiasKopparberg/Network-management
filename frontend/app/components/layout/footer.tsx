@@ -5,8 +5,8 @@ export default function Footer() {
     <footer className="border-t bg-gray-50 mt-16">
       <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h2 className="font-bold text-lg text-gray-900">
-            NetControl
+          <h2 className="text-xl font-bold mb-2">
+            Network Management
           </h2>
 
           <p className="text-sm text-gray-600 mt-2">
@@ -40,8 +40,8 @@ export default function Footer() {
 
       </div>
 
-      <div className="border-t py-4 text-center text-xs text-gray-500">
-        © {new Date().getFullYear()} NetControl. All rights reserved.
+      <div className="border-t border-gray-800 py-4 text-center text-gray-500 text-sm">
+        © 2026 Network Management. All rights reserved.
       </div>
     </footer>
   );

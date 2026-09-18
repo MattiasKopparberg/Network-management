@@ -1,8 +1,9 @@
+import "./global.css";
 import Navbar from "@/app/components/layout/navBar"
 import Footer from "@/app/components/layout/footer"
 
 export const metadata = {
-  title: "Alien Planet",
+  title: "Network Management",
   description: "Fullstack Next.js app",
 };
 

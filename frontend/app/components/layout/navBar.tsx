@@ -4,6 +4,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
+  { mame: "Login", href: "/login"}
 ];
 
 export default function Navbar() {
@@ -14,7 +15,7 @@ export default function Navbar() {
           href="/"
           className="text-2xl font-bold text-blue-600"
         >
-          Alien Planet
+          Network Management
         </Link>
 
         <div className="flex items-center gap-6">
