@@ -1,4 +1,4 @@
-import { Users, CreateUserInput } from "../models/users.js";
+import { Users } from "../models/users.js";
 import { db } from "../config/db.js";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
