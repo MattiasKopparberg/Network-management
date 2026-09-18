@@ -17,7 +17,7 @@ export const createUser = async (
       (email, password_hash)
       VALUES (?, ?)
     `,
-    [email]
+    [email, passwordHash]
   );
 
   return result.insertId;

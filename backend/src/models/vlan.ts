@@ -1,6 +1,6 @@
 export interface Vlan {
-    id:number,
-    creaton_date: Date,
+    id: number,
+    creation_date: Date,
     name: string
 }
 

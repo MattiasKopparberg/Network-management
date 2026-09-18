@@ -9,7 +9,6 @@ export interface Devices {
   installation_date: Date;
   manufacturer: string;
   location_id: number;
-  floor: number;
 }
 
 export type CreateDeviceInput = Omit<Devices, "id">;

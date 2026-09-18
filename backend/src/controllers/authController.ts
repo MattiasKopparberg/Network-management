@@ -1,4 +1,4 @@
-import * as authService from "../services/authService.js"
+import * as authService from "../services/authService.js";
 import { Request, Response, NextFunction } from "express";
 import { asyncHandler } from "../middleware/asyncHandler.js";
 import { AppError } from "../utils/AppError.js";
