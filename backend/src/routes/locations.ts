@@ -6,7 +6,7 @@ import {
   createLocation,
   updateLocation,
   deleteLocation,
-} from "../controllers/locationsController";
+} from "../controllers/locationsController.js"
 
 const router = express.Router();
 

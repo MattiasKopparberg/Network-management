@@ -1,7 +1,7 @@
-import * as authService from "../services/authService";
+import * as authService from "../services/authService.js";
 import { Request, Response, NextFunction } from "express";
-import { asyncHandler } from "../middleware/asyncHandler";
-import { AppError } from "../utils/AppError";
+import { asyncHandler } from "../middleware/asyncHandler.js";
+import { AppError } from "../utils/AppError.js";
 
 export const loginUser = asyncHandler(
   async (req: Request, res: Response) => {

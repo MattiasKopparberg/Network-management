@@ -1,5 +1,5 @@
-import * as vlanRepo from "../repositories/vlanRepository";
-import type { Vlan, CreateVlanInput } from "../models/vlan";
+import * as vlanRepo from "../repositories/vlanRepository.js";
+import type { Vlan, CreateVlanInput } from "../models/vlan.js";
 
 export const getAllVlan = async (): Promise<Vlan[]> => {
   return await vlanRepo.getAllVlan();

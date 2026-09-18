@@ -1,10 +1,10 @@
-import { db } from "../config/db";
+import { db } from "../config/db.js";
 
 import {
   DeviceVlan,
   CreateDeviceVlanInput,
   DeviceVlanDetails
-} from "../models/deviceVlan";
+} from "../models/deviceVlan.js";
 
 import {
   ResultSetHeader,

@@ -1,5 +1,5 @@
-import * as deviceRepo from "../repositories/devicesRepository";
-import type { Devices, CreateDeviceInput } from "../models/devices";
+import * as deviceRepo from "../repositories/devicesRepository.js";
+import type { Devices, CreateDeviceInput } from "../models/devices.js";
 
 export const getDevices = async (locationId?: number): Promise<Devices[]> => {
   if (locationId) {

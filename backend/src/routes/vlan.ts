@@ -6,7 +6,7 @@ import {
 //   createVlan,
 //   updateVlan,
 //   deleteVlan,
-} from "../controllers/vlanController";
+} from "../controllers/vlanController.js";
 
 const router = express.Router();
 

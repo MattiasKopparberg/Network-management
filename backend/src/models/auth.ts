@@ -1,4 +1,4 @@
-import { Users } from "./users";
+import { Users } from "./users.js";
 
 export type PublicUser = Omit<Users, "password_hash">;
 

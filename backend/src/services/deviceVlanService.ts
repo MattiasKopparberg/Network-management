@@ -1,10 +1,10 @@
-import * as deviceVlanRepo from "../repositories/deviceVlanRepository";
+import * as deviceVlanRepo from "../repositories/deviceVlanRepository.js";
 
 import type {
   DeviceVlan,
   CreateDeviceVlanInput,
   DeviceVlanDetails
-} from "../models/deviceVlan";
+} from "../models/deviceVlan.js";
 
 export const createDeviceVlan = async (
   deviceVlanData: CreateDeviceVlanInput,

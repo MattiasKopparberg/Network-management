@@ -1,5 +1,5 @@
-import { db } from "../config/db";
-import { Location, CreateLocationInput } from "../models/location";
+import { db } from "../config/db.js";
+import { Location, CreateLocationInput } from "../models/location.js";
 import { ResultSetHeader } from "mysql2";
 
 export const getAllLocations = async () => {

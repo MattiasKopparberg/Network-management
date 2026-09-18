@@ -1,8 +1,8 @@
-import { db } from "../config/db";
+import { db } from "../config/db.js";
 import type {
   Location,
   CreateLocationInput
-} from "../models/location";
+} from "../models/location.js";
 
 import { ResultSetHeader } from "mysql2";
 

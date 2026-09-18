@@ -1,5 +1,5 @@
 import { ParsedQs } from "qs";
-import { AppError } from "./AppError";
+import { AppError } from "./AppError.js";
 
 export const parseOptionalPositiveNumber = (
   value:

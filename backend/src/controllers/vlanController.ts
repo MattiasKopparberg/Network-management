@@ -1,4 +1,4 @@
-import * as vlanService from "../services/vlanService";
+import * as vlanService from "../services/vlanService.js";
 import { Request, Response, NextFunction } from "express";
 
 export const getAllVlan = async (

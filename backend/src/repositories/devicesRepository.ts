@@ -1,5 +1,5 @@
-import { db } from "../config/db";
-import { Devices, CreateDeviceInput } from "../models/devices";
+import { db } from "../config/db.js";
+import { Devices, CreateDeviceInput } from "../models/devices.js";
 import { ResultSetHeader } from "mysql2";
 
 export const getAllDevices = async (): Promise<Devices[]> => {

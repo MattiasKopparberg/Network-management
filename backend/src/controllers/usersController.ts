@@ -1,4 +1,4 @@
-import * as usersService from "../services/usersService";
+import * as usersService from "../services/usersService.js";
 import { Request, Response, NextFunction } from "express"
 
 export const getAllUsers = async (

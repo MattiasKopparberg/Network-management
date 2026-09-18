@@ -7,7 +7,7 @@ import {
   getDeviceLocation,
   updateDevice,
   deleteDevice,
-} from "../controllers/devicesController";
+} from "../controllers/devicesController.js";
 
 const router = express.Router();
 

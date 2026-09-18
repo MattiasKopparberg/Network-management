@@ -1,5 +1,5 @@
-import type { Users } from "../models/users";
-import * as userRepository from "../repositories/usersRepository";
+import type { Users } from "../models/users.js";
+import * as userRepository from "../repositories/usersRepository.js";
 
 
 export const getAllUsers = async (): Promise<Users[]> => {

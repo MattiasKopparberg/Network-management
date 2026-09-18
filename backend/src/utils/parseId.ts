@@ -1,4 +1,4 @@
-import { AppError } from "./AppError";
+import { AppError } from "./AppError.js";
 
 export const parseId = (idParam: unknown): number => {
   if (typeof idParam !== "string") {
