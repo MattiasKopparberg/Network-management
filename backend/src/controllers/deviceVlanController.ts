@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { asyncHandler } from "../middleware/asyncHandler.js";
 import { AppError } from "../utils/AppError.js";
 import { parseId } from "../utils/parseId.js";
-import { requireFields } from "../utils/requierdFields.js";
+import { requireFields } from "../utils/requiredFields.js";
 
 export const createDeviceVlan = asyncHandler(async (req, res) => {
   requireFields(req.body, [

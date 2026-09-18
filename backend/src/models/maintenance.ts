@@ -1,5 +1,5 @@
 export interface Maintenance {
-    event_id:number,
+    id: number,
     device_id: number,
     event_date: Date,
     description: string,

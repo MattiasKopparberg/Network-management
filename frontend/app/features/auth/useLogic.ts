@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);

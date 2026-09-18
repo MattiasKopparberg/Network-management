@@ -8,7 +8,7 @@ export const getAllDevices = async (): Promise<Devices[]> => {
 };
 
 export const getDeviceById = async (id: number): Promise<Devices | null> => {
-  const [rows] = await db.query("SELECT * FROM devices WHERE device_id = ?", [id]);
+  const [rows] = await db.query("SELECT * FROM devices WHERE id = ?", [id]);
 
   return (rows as Devices[])[0] || null;
 };
@@ -51,9 +51,9 @@ export const getDevicesByLocation = async (
 
 export const getDeviceLocation = async (id: number) => {
   const [rows] = await db.query(
-    `SELECT l.*, l.name as location_name
+    `SELECT l.*
     FROM devices d
-    JOIN locations l ON d.location_id = l.location_id
+    JOIN locations l ON d.location_id = l.id
     WHERE d.id = ?`,
     [id],
   );
@@ -74,7 +74,7 @@ export const updateDevice = async (
 
   const setClause = fields.map((field) => `${field} = ?`).join(", ");
 
-  await db.query(`UPDATE devices SET ${setClause} WHERE device_id = ?`, [
+  await db.query(`UPDATE devices SET ${setClause} WHERE id = ?`, [
     ...values,
     id,
   ]);
@@ -84,7 +84,7 @@ export const updateDevice = async (
 
 export const deleteDevice = async (id: number): Promise<boolean> => {
   const [result] = await db.query<ResultSetHeader>(
-    "DELETE FROM devices WHERE device_id = ?",
+    "DELETE FROM devices WHERE id = ?",
     [id],
   );
 
