@@ -1,7 +1,6 @@
-export default function deviceVlanPage() {
-    return(
-        <div>
-            <h1>device vlan</h1>
-        </div>
-    )
-}
+// import CrudManager from "@/app/components/crud/CrudManager";
+// import { deviceVlanConfig } from "@/app/components/crud/configs/deviceVlanConfig";
+
+// export default function DeviceVlanPage() {
+//   return <CrudManager config={deviceVlanConfig} />;
+// }

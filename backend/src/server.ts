@@ -1,7 +1,7 @@
 import app from "./app.js";
 import { db } from "./config/db.js";
 
-const PORT = 3000;
+const PORT = 5000;
 
 const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`Running on port ${PORT}`);

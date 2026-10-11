@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -23,10 +24,12 @@ export function useLogin() {
       });
 
       if (!res.ok) {
-        throw new Error("Login failed");
-      }
+  const data = await res.json();
+  throw new Error(data.message || "Login failed");
+}
 
-      return await res.json();
+const data = await res.json();
+return data.user;
     } catch (err: any) {
       setError(err.message);
       return null;

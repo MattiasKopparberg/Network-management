@@ -1,7 +1,6 @@
-export default function usersPage() {
-    return(
-        <div>
-            <h1>Users</h1>
-        </div>
-    )
-}
+// import CrudManager from "@/app/components/crud/CrudManager";
+// import { usersConfig } from "@/app/components/crud/configs/usersConfig";
+
+// export default function UsersPage() {
+//   return <CrudManager config={usersConfig} />;
+// }
