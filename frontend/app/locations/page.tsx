@@ -1,8 +1,8 @@
-export default function locationsPage() {
-    return(
-    <div>
-        <h1>locations</h1>
-    </div>
-    )
-    
+"use client"
+
+import CrudManager from "@/app/components/ui/crudManager";
+import { locationsConfig } from "@/app/config/locationsConfig";
+
+export default function UsersPage() {
+  return <CrudManager config={locationsConfig} />;
 }
