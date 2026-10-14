@@ -1,6 +1,8 @@
-// import CrudManager from "@/app/components/crud/CrudManager";
-// import { deviceConfig } from "@/app/components/crud/configs/deviceConfig";
+"use client"
 
-// export default function DevicesPage() {
-//   return <CrudManager config={deviceConfig} />;
-// }
+import CrudManager from "@/app/components/ui/crudManager";
+import { deviceConfig } from "../config/deviceConfig";
+
+export default function UsersPage() {
+  return <CrudManager config={deviceConfig} />;
+}

@@ -10,6 +10,7 @@ import maintenanceRoute from "./routes/maintenance.js";
 import usersRoute from "./routes/users.js";
 import vlanRoute from "./routes/vlan.js";
 import authRoute from "./routes/auth.js";
+import cors from "cors"
 
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -33,7 +34,7 @@ app.use("/users", usersRoute);
 app.use("/vlan", vlanRoute);
 app.use("/auth", authRoute);
 
-app.get("/", (_req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "API is running" });
 });
 

@@ -8,7 +8,7 @@ export const getAllLocations = async () => {
 }
 
 export const getLocationById = async (id: number): Promise<Location | null> => {
-  const [rows] = await db.query("SELECT * FROM locations WHERE id = ?", [id]);
+  const [rows] = await db.query("SELECT * FROM locations WHERE location_id = ?", [id]);
 
   return (rows as Location[])[0] || null;
 };
@@ -37,7 +37,7 @@ export const createLocation = async (
 export const getLocationByLocation = async (
   locationId: number,
 ): Promise<Location[]> => {
-  const [rows] = await db.query("SELECT * FROM locations WHERE id = ?", [
+  const [rows] = await db.query("SELECT * FROM locations WHERE location_id = ?", [
     locationId,
   ]);
 
@@ -48,11 +48,16 @@ export const getLocationDevices = async (id: number) => {
   const [rows] = await db.query(
     `SELECT d.*
     FROM devices d
-    JOIN locations l ON d.location_id = l.id
+    JOIN locations l ON d.location_id = l.location_id
     WHERE l.id = ?`,
     [id],
   );
-  return rows as any[];
+  return (rows as any[]).map((row) => ({
+  id: row.location_id,
+  coordinates: row.coordinates,
+  address: row.address,
+  floor: row.floor,
+}));
 };
 
 export const updateLocation = async (
@@ -69,7 +74,7 @@ export const updateLocation = async (
 
   const setClause = fields.map((field) => `${field} = ?`).join(", ");
 
-  await db.query(`UPDATE locations SET ${setClause} WHERE id = ?`, [
+  await db.query(`UPDATE locations SET ${setClause} WHERE location_id = ?`, [
     ...values,
     id,
   ]);
@@ -79,7 +84,7 @@ export const updateLocation = async (
 
 export const deleteLocation = async (id: number): Promise<boolean> => {
   const [result] = await db.query<ResultSetHeader>(
-    "DELETE FROM locations WHERE id = ?",
+    "DELETE FROM locations WHERE location_id = ?",
     [id],
   );
 
