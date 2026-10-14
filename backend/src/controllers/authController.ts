@@ -5,22 +5,23 @@ import { AppError } from "../utils/AppError.js";
 
 export const loginUser = asyncHandler(
   async (req: Request, res: Response) => {
-
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new AppError(
-        "Email and password required",
-        400
-      );
+      throw new AppError("Email and password required", 400);
     }
 
-    const result = await authService.loginUser(
-      email,
-      password
-    );
+    const result = await authService.loginUser(email, password);
 
-    res.status(200).json(result);
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.status(200).json({ user: result.user });
   }
 );
 

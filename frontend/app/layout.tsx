@@ -1,27 +1,22 @@
-import "./global.css";
-import Navbar from "@/app/components/layout/navBar"
-import Footer from "@/app/components/layout/footer"
 
-export const metadata = {
+import type { Metadata } from "next";
+import AppShell from "@/app/components/layout/appShell";
+import "./global.css"
+
+export const metadata: Metadata = {
   title: "Network Management",
-  description: "Fullstack Next.js app",
+  description: "Manage network infrastructure and devices.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
-        <Navbar />
-
-        <main className="flex-1">
-          {children}
-        </main>
-
-        <Footer />
+      <body>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
