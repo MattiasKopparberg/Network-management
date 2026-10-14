@@ -11,10 +11,12 @@
     "setup": "npm run install:all && npm run build && npm run dev"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "concurrently": "^9.0.0"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "cors": "^2.8.6",
     "postcss": "^8.5.26",
     "tailwindcss": "^4.3.3"
   }

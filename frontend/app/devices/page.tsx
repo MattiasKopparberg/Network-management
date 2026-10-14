@@ -1,7 +1,8 @@
-export default function devicesPage() {
-    return(
-        <div>
-            <h1>devices</h1>
-        </div>
-    )
+"use client"
+
+import CrudManager from "@/app/components/ui/crudManager";
+import { deviceConfig } from "../config/deviceConfig";
+
+export default function UsersPage() {
+  return <CrudManager config={deviceConfig} />;
 }

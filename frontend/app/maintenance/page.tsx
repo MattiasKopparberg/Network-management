@@ -1,7 +1,8 @@
-export default function maitnenancePage() {
-    return(
-        <div>
-            <h1>Maintenance</h1>
-        </div>
-    )
+"use client"
+
+import CrudManager from "@/app/components/ui/crudManager";
+import { maintenanceConfig } from "@/app/config/maintenanceConfig";
+
+export default function UsersPage() {
+  return <CrudManager config={maintenanceConfig} />;
 }

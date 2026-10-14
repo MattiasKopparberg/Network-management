@@ -6,11 +6,18 @@ import maintenanceRoute from "./routes/maintenance.js";
 import usersRoute from "./routes/users.js";
 import vlanRoute from "./routes/vlan.js";
 import authRoute from "./routes/auth.js";
+import cors from "cors"
 
 import { errorHandler } from "./middleware/errorHandler.js";
 
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 app.use(express.json());
 app.use("/devices", devicesRoute);
@@ -20,7 +27,6 @@ app.use("/maintenance", maintenanceRoute)
 app.use("/users", usersRoute)
 app.use("/vlan", vlanRoute)
 app.use("/auth", authRoute)
-
 
 app.get("/", (req, res) => {
   res.json({ message: "API is running" });
