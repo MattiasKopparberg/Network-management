@@ -10,7 +10,6 @@ import maintenanceRoute from "./routes/maintenance.js";
 import usersRoute from "./routes/users.js";
 import vlanRoute from "./routes/vlan.js";
 import authRoute from "./routes/auth.js";
-import cors from "cors"
 
 import { errorHandler } from "./middleware/errorHandler.js";
 

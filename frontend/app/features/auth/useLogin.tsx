@@ -5,6 +5,8 @@ import Input from "@/app/components/ui/input";
 import Button from "@/app/components/ui/button";
 import Card from "@/app/components/ui/card";
 import { useLogin } from "./useLogic";
+import { useRouter } from "next/navigation";
+import { useAuth } from "./authProvider";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -12,11 +14,19 @@ export default function LoginForm() {
 
   const { login, loading, error } = useLogin();
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const router = useRouter();
+  const { refreshUser } = useAuth();
 
-    await login(email, password);
-  };
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const user = await login(email, password);
+
+  if (user) {
+    await refreshUser();
+    router.push("/dashboard");
+  }
+};
 
   return (
     <Card>

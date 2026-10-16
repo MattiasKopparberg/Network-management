@@ -35,7 +35,7 @@ export const loginUser = async (
     await userRepository.getUserByEmail(email);
 
     if (!user) {
-        throw new AppError("Invalid credentials", 404)
+        throw new AppError("Invalid credentials", 401)
     }
 
     const valid = await bcrypt.compare(
@@ -65,4 +65,8 @@ if (!secret) {
             email: user.email
         },
     };
+};
+
+export const getCurrentUser = async (userId: number) => {
+  return userRepository.getUserById(userId);
 };

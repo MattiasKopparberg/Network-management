@@ -25,6 +25,20 @@ export const loginUser = asyncHandler(
   }
 );
 
+export const getCurrentUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = res.locals.userId;
+
+    const user = await authService.getCurrentUser(userId);
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    res.status(200).json({ user });
+  }
+);
+
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
 
@@ -43,5 +57,19 @@ export const registerUser = asyncHandler(
     );
 
     res.status(201).json(user);
+  }
+);
+
+
+export const logOutUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+
+    res.status(200).json({ message: "Logged out successfully" });
   }
 );

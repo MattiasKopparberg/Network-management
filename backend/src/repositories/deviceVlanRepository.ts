@@ -11,6 +11,23 @@ import {
   RowDataPacket,
 } from "mysql2";
 
+export const getDeviceVlanById = async (
+  deviceId: number,
+  vlanId: number,
+  accountId: number,
+): Promise<DeviceVlan | null> => {
+  const [rows] = await db.query<RowDataPacket[]>(
+    `SELECT *
+     FROM deviceVlan
+     WHERE device_id = ?
+       AND vlan_id = ?
+       AND account_id = ?`,
+    [deviceId, vlanId, accountId],
+  );
+
+  return (rows[0] as DeviceVlan | undefined) ?? null;
+};
+
 export const createDeviceVlan = async (
   deviceVlan: CreateDeviceVlanInput,
 ): Promise<DeviceVlan> => {
@@ -32,18 +49,20 @@ export const createDeviceVlan = async (
 };
 
 export const getDeviceVlanById = async (
-  id: number,
+  deviceId: number,
+  vlanId: number,
+  accountId: number,
 ): Promise<DeviceVlan | null> => {
   const [rows] = await db.query<RowDataPacket[]>(
-    `SELECT * FROM devicevlan WHERE id = ?`,
-    [id],
+    `SELECT *
+     FROM deviceVlan
+     WHERE device_id = ?
+       AND vlan_id = ?
+       AND account_id = ?`,
+    [deviceId, vlanId, accountId],
   );
 
-  if (rows.length === 0) {
-    return null;
-  }
-
-  return rows[0] as DeviceVlan;
+  return (rows[0] as DeviceVlan | undefined) ?? null;
 };
 
 export const updateDeviceVlan = async (
@@ -73,11 +92,16 @@ export const updateDeviceVlan = async (
 };
 
 export const deleteDeviceVlan = async (
-  id: number,
+  deviceId: number,
+  vlanId: number,
+  accountId: number,
 ): Promise<boolean> => {
   const [result] = await db.query<ResultSetHeader>(
-    `DELETE FROM devicevlan WHERE id = ?`,
-    [id],
+    `DELETE FROM deviceVlan
+     WHERE device_id = ?
+       AND vlan_id = ?
+       AND account_id = ?`,
+    [deviceId, vlanId, accountId],
   );
 
   return result.affectedRows > 0;

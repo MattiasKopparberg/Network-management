@@ -53,7 +53,7 @@ export const getDeviceLocation = async (id: number) => {
   const [rows] = await db.query(
     `SELECT l.*
     FROM devices d
-    JOIN locations l ON d.location_id = l.id
+    JOIN locations l ON d.location_id = l.location_id
     WHERE d.id = ?`,
     [id],
   );
