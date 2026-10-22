@@ -1,37 +1,59 @@
 import * as deviceRepo from "../repositories/devicesRepository.js";
-import type { Devices, CreateDeviceInput } from "../models/devices.js";
+import type {
+  Devices,
+  CreateDeviceInput,
+} from "../models/devices.js";
 
-export const getDevices = async (locationId?: number): Promise<Devices[]> => {
-  if (locationId) {
-    return await deviceRepo.getDevicesByLocation(locationId);
+export const getDevices = async (
+  accountId: number,
+  locationId?: number,
+): Promise<Devices[]> => {
+  if (locationId !== undefined) {
+    return deviceRepo.getDevicesByLocation(locationId, accountId);
   }
-  return await deviceRepo.getAllDevices();
+
+  return deviceRepo.getAllDevices(accountId);
 };
 
-export const getDeviceById = async (id: number) => {
-  return await deviceRepo.getDeviceById(id);
+export const getDeviceById = async (
+  id: number,
+  accountId: number,
+): Promise<Devices | null> => {
+  return deviceRepo.getDeviceById(id, accountId);
 };
 
-export const getDeviceCount = async () => {
-  const devices = await deviceRepo.getAllDevices();
+export const getDeviceCount = async (
+  accountId: number,
+): Promise<number> => {
+  const devices = await deviceRepo.getAllDevices(accountId);
   return devices.length;
 };
 
-export const createDevice = async (deviceData: Devices) => {
-  return await deviceRepo.createDevice(deviceData);
+export const createDevice = async (
+  deviceData: CreateDeviceInput,
+  accountId: number,
+): Promise<Devices> => {
+  return deviceRepo.createDevice(deviceData, accountId);
 };
 
-export const getDeviceLocation = async (id: number) => {
-  return await deviceRepo.getDevicesByLocation(id);
+export const getDeviceLocation = async (
+  id: number,
+  accountId: number,
+) => {
+  return deviceRepo.getDeviceLocation(id, accountId);
 };
 
 export const updateDevice = async (
   id: number,
-  updates: Partial<CreateDeviceInput>
-) => {
-  return await deviceRepo.updateDevice(id, updates);
+  accountId: number,
+  updates: Partial<CreateDeviceInput>,
+): Promise<Devices | null> => {
+  return deviceRepo.updateDevice(id, accountId, updates);
 };
 
-export const deleteDevice = async (id: number): Promise<boolean> => {
-  return await deviceRepo.deleteDevice(id);
+export const deleteDevice = async (
+  id: number,
+  accountId: number,
+): Promise<boolean> => {
+  return deviceRepo.deleteDevice(id, accountId);
 };

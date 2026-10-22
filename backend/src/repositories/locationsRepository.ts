@@ -1,31 +1,63 @@
+
 import { db } from "../config/db.js";
-import { Location, CreateLocationInput } from "../models/location.js";
-import { ResultSetHeader } from "mysql2";
+import type { RowDataPacket, ResultSetHeader } from "mysql2";
+import type {
+  Location,
+  CreateLocationInput,
+} from "../models/location.js";
 
-export const getAllLocations = async () => {
-    const [ rows ] = await db.query("select * from locations")
-    return rows as Location[];
-}
+type LocationRow = RowDataPacket & {
+  location_id: number;
+  coordinates: string;
+  address: string;
+  floor: number;
+};
 
-export const getLocationById = async (id: number): Promise<Location | null> => {
-  const [rows] = await db.query("SELECT * FROM locations WHERE location_id = ?", [id]);
+const mapLocation = (row: LocationRow): Location => ({
+  id: row.location_id,
+  coordinates: row.coordinates,
+  address: row.address,
+  floor: row.floor,
+});
 
-  return (rows as Location[])[0] || null;
+export const getAllLocations = async (
+  accountId: number,
+): Promise<Location[]> => {
+  const [rows] = await db.query<LocationRow[]>(
+    `SELECT location_id, coordinates, address, floor
+     FROM locations
+     WHERE account_id = ?
+     ORDER BY location_id`,
+    [accountId],
+  );
+
+  return rows.map(mapLocation);
+};
+
+export const getLocationById = async (
+  id: number,
+  accountId: number,
+): Promise<Location | null> => {
+  const [rows] = await db.query<LocationRow[]>(
+    `SELECT location_id, coordinates, address, floor
+     FROM locations
+     WHERE location_id = ? AND account_id = ?
+     LIMIT 1`,
+    [id, accountId],
+  );
+
+  return rows[0] ? mapLocation(rows[0]) : null;
 };
 
 export const createLocation = async (
   location: CreateLocationInput,
+  accountId: number,
 ): Promise<Location> => {
-
   const [result] = await db.query<ResultSetHeader>(
     `INSERT INTO locations
-    (coordinates, address, floor)
-    VALUES (?, ?, ?)`,
-    [
-      location.coordinates,
-      location.address,
-      location.floor
-    ]
+      (account_id, coordinates, address, floor)
+     VALUES (?, ?, ?, ?)`,
+    [accountId, location.coordinates, location.address, location.floor],
   );
 
   return {
@@ -34,59 +66,62 @@ export const createLocation = async (
   };
 };
 
-export const getLocationByLocation = async (
-  locationId: number,
-): Promise<Location[]> => {
-  const [rows] = await db.query("SELECT * FROM locations WHERE location_id = ?", [
-    locationId,
-  ]);
-
-  return rows as Location[];
-};
-
-export const getLocationDevices = async (id: number) => {
-  const [rows] = await db.query(
-    `SELECT d.*
-    FROM devices d
-    JOIN locations l ON d.location_id = l.location_id
-    WHERE l.id = ?`,
-    [id],
-  );
-  return (rows as any[]).map((row) => ({
-  id: row.location_id,
-  coordinates: row.coordinates,
-  address: row.address,
-  floor: row.floor,
-}));
-};
-
 export const updateLocation = async (
   id: number,
   updates: Partial<CreateLocationInput>,
+  accountId: number,
 ): Promise<Location | null> => {
-  const fields = Object.keys(updates);
+  const allowedFields = ["coordinates", "address", "floor"] as const;
+  const fields = allowedFields.filter(
+    (field) => updates[field] !== undefined,
+  );
 
   if (fields.length === 0) {
-    return null;
+    return getLocationById(id, accountId);
   }
 
-  const values = Object.values(updates);
+  const values = fields.map((field) => updates[field]);
 
-  const setClause = fields.map((field) => `${field} = ?`).join(", ");
+  const setClause = fields
+    .map((field) => `${field} = ?`)
+    .join(", ");
 
-  await db.query(`UPDATE locations SET ${setClause} WHERE location_id = ?`, [
-    ...values,
-    id,
-  ]);
+  const [result] = await db.query<ResultSetHeader>(
+    `UPDATE locations
+     SET ${setClause}
+     WHERE location_id = ? AND account_id = ?`,
+    [...values, id, accountId],
+  );
 
-  return await getLocationById(id);
+  if (result.affectedRows === 0) {
+    return getLocationById(id, accountId);
+  }
+
+  return getLocationById(id, accountId);
 };
 
-export const deleteLocation = async (id: number): Promise<boolean> => {
+export const deleteLocation = async (
+  id: number,
+  accountId: number,
+): Promise<boolean> => {
   const [result] = await db.query<ResultSetHeader>(
-    "DELETE FROM locations WHERE location_id = ?",
-    [id],
+    `DELETE FROM locations
+     WHERE location_id = ? AND account_id = ?`,
+    [id, accountId],
   );
 
   return result.affectedRows > 0;
+};
+
+export const getLocationCount = async (
+  accountId: number,
+): Promise<number> => {
+  const [rows] = await db.query<RowDataPacket[]>(
+    `SELECT COUNT(*) AS count
+     FROM locations
+     WHERE account_id = ?`,
+    [accountId],
+  );
+
+  return Number(rows[0].count);
 };

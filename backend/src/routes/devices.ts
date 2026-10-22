@@ -1,5 +1,6 @@
 import express from "express";
 import { requireAuth } from "../middleware/requireAuth.js";
+import { requireAccountAccess } from "../middleware/requireAccountAccess.js";
 import {
   getDevices,
   getDeviceById,
@@ -13,6 +14,7 @@ import {
 const router = express.Router();
 
 router.use(requireAuth);
+router.use(requireAccountAccess);
 
 router.get("/", getDevices);
 router.get("/count", getDeviceCount);
