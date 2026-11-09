@@ -94,6 +94,9 @@ async function seed() {
 
         "Eva", "Eriksson", "eva", "Network",
         "eva@example.test", passwordHash, "user",
+
+        "Admin", "Adminsson", "admin", "admin",
+        "admin@example.test", passwordHash, "user"
       ],
     );
 
