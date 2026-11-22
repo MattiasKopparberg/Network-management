@@ -8,7 +8,8 @@
     "backend": "npm run dev --prefix backend",
     "frontend": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "setup": "npm run install:all && npm run build && npm run dev"
+    "setup": "npm run install:all && npm run build && npm run dev",
+    "test:a11y": "npm run test:a11y --prefix frontend"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
