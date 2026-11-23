@@ -1,92 +1,123 @@
+import type { Request, Response } from "express";
 import * as deviceService from "../services/devicesService.js";
-import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError.js";
 import { asyncHandler } from "../middleware/asyncHandler.js";
 import { parseId } from "../utils/parseId.js";
 import { parseOptionalPositiveNumber } from "../utils/parseOptionalPositiveNumber.js";
 
 export const getDevices = asyncHandler(async (req: Request, res: Response) => {
+  const accountId = res.locals.accountId as number;
   const locationId = parseOptionalPositiveNumber(req.query.locationId);
 
-  const devices = await deviceService.getDevices(locationId);
+  const devices = await deviceService.getDevices(accountId, locationId);
 
   res.status(200).json(devices);
 });
 
-export const getDeviceById = asyncHandler(async (req: Request, res: Response) => {
-  const id = parseId(req.params.id);
+export const getDeviceById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const accountId = res.locals.accountId as number;
+    const id = parseId(req.params.id);
 
-  const device = await deviceService.getDeviceById(id);
+    const device = await deviceService.getDeviceById(id, accountId);
 
-  if (!device) {
-    throw new AppError("Device not found", 404);
-  }
-
-  res.json(device);
-});
-
-export const getDeviceCount = asyncHandler(async (req: Request, res: Response) => {
-  const count = await deviceService.getDeviceCount();
-
-  res.status(200).json({ count });
-});
-
-export const createDevice = asyncHandler(async (req: Request, res: Response) => {
-  const requiredFields = [
-    "IPv4_address",
-    "IPv6_address",
-    "MAC_address",
-    "subnet_mask",
-    "OS",
-    "OS_version",
-    "installation_date",
-    "manufacturer",
-    "location_id",
-  ];
-
-  for (const field of requiredFields) {
-    if (!req.body[field]) {
-      throw new AppError(`${field} is required`, 400);
+    if (!device) {
+      throw new AppError("Device not found", 404);
     }
-  }
 
-  const newDevice = await deviceService.createDevice(req.body);
+    res.status(200).json(device);
+  },
+);
 
-  res.status(201).json(newDevice);
-});
+export const getDeviceCount = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const accountId = res.locals.accountId as number;
+    const count = await deviceService.getDeviceCount(accountId);
 
-export const getDeviceLocation = asyncHandler(async (req: Request, res: Response) => {
-  const id = parseId(req.params.id);
+    res.status(200).json({ count });
+  },
+);
 
-  const location = await deviceService.getDeviceLocation(id);
+export const createDevice = asyncHandler(
+  async (req: Request, res: Response) => {
+    const accountId = res.locals.accountId as number;
 
-  if (!location) {
-    throw new AppError("Device or location not found", 404);
-  }
+    const requiredFields = [
+      "IPv4_address",
+      "IPv6_address",
+      "MAC_address",
+      "subnet_mask",
+      "OS",
+      "OS_version",
+      "installation_date",
+      "manufacturer",
+      "location_id",
+    ];
 
-  res.status(200).json(location);
-});
+    for (const field of requiredFields) {
+      if (
+        req.body[field] === undefined ||
+        req.body[field] === null ||
+        req.body[field] === ""
+      ) {
+        throw new AppError(`${field} is required`, 400);
+      }
+    }
 
-export const updateDevice = asyncHandler(async (req: Request, res: Response) => {
-  const id = parseId(req.params.id);
+    const newDevice = await deviceService.createDevice(
+      req.body,
+      accountId,
+    );
 
-  const updatedDevice = await deviceService.updateDevice(id, req.body);
+    res.status(201).json(newDevice);
+  },
+);
 
-  if (!updatedDevice) {
-    throw new AppError("Device not found", 404);
-  }
+export const getDeviceLocation = asyncHandler(
+  async (req: Request, res: Response) => {
+    const accountId = res.locals.accountId as number;
+    const id = parseId(req.params.id);
 
-  res.status(200).json(updatedDevice);
-});
+    const location = await deviceService.getDeviceLocation(id, accountId);
 
-export const deleteDevice = asyncHandler(async (req: Request, res: Response) => {
-  const id = parseId(req.params.id);
+    if (!location) {
+      throw new AppError("Device or location not found", 404);
+    }
 
-  const deleted = await deviceService.deleteDevice(id);
+    res.status(200).json(location);
+  },
+);
 
-  if (!deleted) {
-    throw new AppError("Device not found", 404);
-  }
+export const updateDevice = asyncHandler(
+  async (req: Request, res: Response) => {
+    const accountId = res.locals.accountId as number;
+    const id = parseId(req.params.id);
 
-  res.status(204).send();
-});
+    const updatedDevice = await deviceService.updateDevice(
+      id,
+      accountId,
+      req.body,
+    );
+
+    if (!updatedDevice) {
+      throw new AppError("Device not found", 404);
+    }
+
+    res.status(200).json(updatedDevice);
+  },
+);
+
+export const deleteDevice = asyncHandler(
+  async (req: Request, res: Response) => {
+    const accountId = res.locals.accountId as number;
+    const id = parseId(req.params.id);
+
+    const deleted = await deviceService.deleteDevice(id, accountId);
+
+    if (!deleted) {
+      throw new AppError("Device not found", 404);
+    }
+
+    res.status(204).send();
+  },
+);

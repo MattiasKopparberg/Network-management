@@ -1,23 +1,27 @@
 import * as deviceVlanRepo from "../repositories/deviceVlanRepository.js";
-
 import type {
   DeviceVlan,
   CreateDeviceVlanInput,
-  DeviceVlanDetails
+  DeviceVlanDetails,
 } from "../models/deviceVlan.js";
 
 export const createDeviceVlan = async (
   deviceVlanData: CreateDeviceVlanInput,
+  accountId: number,
 ): Promise<DeviceVlan> => {
-  return await deviceVlanRepo.createDeviceVlan(deviceVlanData);
+  return deviceVlanRepo.createDeviceVlan(deviceVlanData, accountId);
 };
 
 export const deleteDeviceVlan = async (
-  id: number,
+  deviceId: number,
+  vlanId: number,
+  accountId: number,
 ): Promise<boolean> => {
-  return await deviceVlanRepo.deleteDeviceVlan(id);
+  return deviceVlanRepo.deleteDeviceVlan(deviceId, vlanId, accountId);
 };
 
-export const getDeviceVlanDetails = async (): Promise<DeviceVlanDetails[]> => {
-  return await deviceVlanRepo.getDeviceVlanDetails();
+export const getDeviceVlanDetails = async (
+  accountId: number,
+): Promise<DeviceVlanDetails[]> => {
+  return deviceVlanRepo.getDeviceVlanDetails(accountId);
 };

@@ -3,23 +3,40 @@
 import { useEffect, useState } from "react";
 import CrudTable from "@/app/components/ui/crudTable";
 import CrudDialog from "@/app/components/ui/crudDialog";
+import Button from "@/app/components/ui/button";
 import type { CrudConfig } from "@/app/types/CRUD";
+import { Plus } from "lucide-react";
 
 type CrudManagerProps<T> = {
   config: CrudConfig<T>;
 };
 
+/**
+ * CRUD Manager Component
+ * 
+ * A complete CRUD (Create, Read, Update, Delete) interface for managing data.
+ * 
+ * WCAG 2.2 AA Compliant:
+ * - Proper heading hierarchy
+ * - Accessible table and form controls
+ * - Keyboard navigation support
+ * - Focus management
+ * - Status messages
+ * - Responsive design
+ */
 export default function CrudManager<T>({
   config,
 }: CrudManagerProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<T | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   async function fetchData() {
     setLoading(true);
+    setError(null);
 
     try {
       const response = await fetch(config.endpoint);
@@ -32,6 +49,11 @@ export default function CrudManager<T>({
       setData(result);
     } catch (error) {
       console.error(error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to load data. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -54,7 +76,12 @@ export default function CrudManager<T>({
   async function handleDelete(item: T) {
     const id = config.getId(item);
 
-    if (!confirm("Are you sure you want to delete this item?")) {
+    // WCAG: Confirmation dialog for destructive actions
+    if (
+      !confirm(
+        `Are you sure you want to delete this ${config.entityName.toLowerCase()}? This action cannot be undone.`
+      )
+    ) {
       return;
     }
 
@@ -70,14 +97,21 @@ export default function CrudManager<T>({
         throw new Error("Failed to delete");
       }
 
+      // Refresh data after successful deletion
       await fetchData();
     } catch (error) {
       console.error(error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to delete. Please try again."
+      );
     }
   }
 
   async function handleSubmit(values: Partial<T>) {
     const isEditing = editingItem !== null;
+    setSubmitting(true);
 
     const url = isEditing
       ? `${config.endpoint}/${config.getId(editingItem)}`
@@ -101,57 +135,81 @@ export default function CrudManager<T>({
       setDialogOpen(false);
       setEditingItem(null);
 
+      // Refresh data after successful submission
       await fetchData();
     } catch (error) {
       console.error(error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to save. Please try again."
+      );
+    } finally {
+      setSubmitting(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="mx-auto max-w-7xl">
-        {/* Page header */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-900">
-              {config.title}
-            </h1>
+    <div className="mx-auto max-w-7xl space-y-6">
+      {/* Page header */}
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
+            {config.title}
+          </h1>
 
-            <p className="mt-1 text-sm text-slate-500">
-              Manage your {config.entityName.toLowerCase()} records.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleCreate}
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            <span className="mr-2 text-lg leading-none">+</span>
-            Add {config.entityName}
-          </button>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+            Manage your {config.entityName.toLowerCase()} records.
+          </p>
         </div>
 
-        {/* Table */}
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-          <CrudTable
-            config={config}
-            data={data}
-            loading={loading}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        </div>
+        <Button
+          type="button"
+          variant="primary"
+          onClick={handleCreate}
+          leftIcon={<Plus className="h-5 w-5" />}
+          aria-label={`Add new ${config.entityName}`}
+        >
+          Add {config.entityName}
+        </Button>
+      </header>
 
-        {/* Dialog */}
-        <CrudDialog
+      {/* Error message */}
+      {error && (
+        <div
+          role="alert"
+          className="rounded-lg border border-[var(--error-light)] bg-[var(--error-light)]/20 px-4 py-3 text-sm text-[var(--error-dark)]"
+        >
+          {error}
+        </div>
+      )}
+
+      {/* Table */}
+      <div className="rounded-xl border border-[var(--border-primary)] bg-[var(--bg-elevated)]">
+        <CrudTable
           config={config}
-          open={dialogOpen}
-          item={editingItem}
-          onClose={() => setDialogOpen(false)}
-          onSubmit={handleSubmit}
+          data={data}
+          loading={loading}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       </div>
+
+      {/* Dialog */}
+      <CrudDialog
+        config={config}
+        open={dialogOpen}
+        item={editingItem}
+        onClose={() => {
+          setDialogOpen(false);
+          setEditingItem(null);
+        }}
+        onSubmit={handleSubmit}
+        loading={submitting}
+      />
     </div>
   );
 }
+
+export type { CrudManagerProps };
+
