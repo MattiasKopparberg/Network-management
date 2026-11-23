@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
-const nextConfig = {
-    allowedDevOrigins: ['kopparberg.dev'],
-    // existing config
+const nextConfig: NextConfig = {
+  allowedDevOrigins: ["kopparberg.dev"],
 };
 
 export default nextConfig;

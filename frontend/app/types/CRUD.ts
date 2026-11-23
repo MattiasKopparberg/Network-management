@@ -3,8 +3,10 @@ import type { ReactNode } from "react";
 export type CrudField<T> = {
   name: keyof T & string;
   label: string;
-  type: "text" | "number" | "date" | "select" | "checkbox";
+  type: "text" | "number" | "date" | "select" | "checkbox" | "email";
   required?: boolean;
+  disabled?: boolean;
+  description?: string;
 
   options?: {
     label: string;

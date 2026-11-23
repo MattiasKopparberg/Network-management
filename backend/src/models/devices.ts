@@ -1,5 +1,7 @@
+
 export interface Devices {
-  id: number;
+  device_id: number;
+  account_id: number;
   IPv4_address: string;
   IPv6_address: string;
   MAC_address: string;
@@ -11,4 +13,7 @@ export interface Devices {
   location_id: number;
 }
 
-export type CreateDeviceInput = Omit<Devices, "id">;
+export type CreateDeviceInput = Omit<
+  Devices,
+  "device_id" | "account_id"
+>;

@@ -7,6 +7,14 @@ export const getAllUsers = async (): Promise<Users[]> => {
   return await userRepository.getAllUsers();
 };
 
+export const getUserById = async (id: number) => {
+  return await userRepository.getUserById(id);
+};
+
+export const getCurrentUser = async (userId: number) => {
+  return userRepository.getUserById(userId);
+};
+
 export const getUserByEmail = async (
   email: string
 ): Promise<Users | null> => {

@@ -10,7 +10,7 @@ import maintenanceRoute from "./routes/maintenance.js";
 import usersRoute from "./routes/users.js";
 import vlanRoute from "./routes/vlan.js";
 import authRoute from "./routes/auth.js";
-import cors from "cors"
+import accountsRoute from "./routes/accounts.js";
 
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -26,6 +26,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/accounts", accountsRoute);
 app.use("/devices", devicesRoute);
 app.use("/locations", locationsRoute);
 app.use("/deviceVlan", deviceVlanRoute);

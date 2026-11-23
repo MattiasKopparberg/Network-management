@@ -23,17 +23,24 @@ export const createUser = async (
   return result.insertId;
 };
 
-export const getUserByEmail = async (
-  email: string
-): Promise<Users | null> => {
+export const getUserById = async (id: number): Promise<Users | null> => {
   const [rows] = await db.query<RowDataPacket[]>(
-    "SELECT * FROM users WHERE email = ?",
-    [email]
+    "SELECT id, email FROM users WHERE id = ?",
+    [id]
   );
 
-  if (rows.length === 0) {
-    return null;
-  }
+  return (rows as Users[])[0] || null;
+};
 
-  return rows[0] as Users;
+export const getUserByEmail = async (
+    email: string
+): Promise<Users | null> => {
+    const [rows] = await db.query<RowDataPacket[]>(
+        "SELECT * FROM users WHERE email = ?",
+        [email]
+    );
+
+    if (rows.length === 0) return null;
+
+    return rows[0] as Users;
 };

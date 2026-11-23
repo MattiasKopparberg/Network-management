@@ -1,17 +1,19 @@
 import express from "express";
-import  { 
-    createDeviceVlan,
-    deleteDeviceVlan,
-    // updateDeviceVlan,
-    getDeviceVlanDetails
+import { requireAuth } from "../middleware/requireAuth.js";
+import { requireAccountAccess } from "../middleware/requireAccountAccess.js";
+import {
+  createDeviceVlan,
+  deleteDeviceVlan,
+  getDeviceVlanDetails,
 } from "../controllers/deviceVlanController.js";
 
 const router = express.Router();
 
+router.use(requireAuth);
+router.use(requireAccountAccess);
 
+router.get("/details", getDeviceVlanDetails);
 router.post("/", createDeviceVlan);
-router.get("/details", getDeviceVlanDetails)
-// router.patch("/:id", updateDeviceVlan);
-router.delete("/:id", deleteDeviceVlan);
+router.delete("/:deviceId/:vlanId", deleteDeviceVlan);
 
-export default router
+export default router;
