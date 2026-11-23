@@ -8,6 +8,16 @@ type ProtectedRouteProps = {
   children: ReactNode;
 };
 
+/**
+ * Protected Route Component
+ * 
+ * Wraps content that requires authentication.
+ * Redirects to login if user is not authenticated.
+ * 
+ * WCAG 2.2 AA Compliant:
+ * - Clear loading state
+ * - Accessible text contrast
+ */
 export default function ProtectedRoute({
   children,
 }: ProtectedRouteProps) {
@@ -23,7 +33,7 @@ export default function ProtectedRoute({
   if (loading || !user) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-[var(--text-secondary)]">
           Checking your session...
         </p>
       </div>

@@ -56,7 +56,7 @@ export const navigationItems: NavigationItem[] = [
   },
   {
     label: "Device VLANs",
-    href: "/device-vlan",
+    href: "/deviceVlan",
     icon: GitBranch,
     group: "network",
   },
