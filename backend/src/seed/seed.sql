@@ -185,3 +185,23 @@ CREATE TABLE domains (
     FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE,
     UNIQUE (account_id, domain_name)
 );
+CREATE TABLE device_connections (
+    connection_id INT PRIMARY KEY AUTO_INCREMENT,
+    account_id INT NOT NULL,
+    source_device_id INT NOT NULL,
+    target_device_id INT NOT NULL,
+    connection_type ENUM(
+        'ethernet',
+        'fiber',
+        'wireless',
+        'logical'
+    ) NOT NULL DEFAULT 'ethernet',
+    label VARCHAR(100),
+    FOREIGN KEY (account_id)
+        REFERENCES accounts(id) ON DELETE CASCADE,
+    FOREIGN KEY (account_id, source_device_id)
+        REFERENCES devices(account_id, device_id) ON DELETE CASCADE,
+    FOREIGN KEY (account_id, target_device_id)
+        REFERENCES devices(account_id, device_id) ON DELETE CASCADE,
+    CHECK (source_device_id <> target_device_id)
+);
